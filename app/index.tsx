@@ -1,52 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
-import * as MediaLibrary from "expo-media-library";
-import { Audio } from "expo-av";
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import AudioList from '@/components/AudioList';
+import AudioPlayer from '@/components/AudioPlayer';
 
-const AudioList = () => {
-  const [audioFiles, setAudioFiles] = useState<MediaLibrary.Asset[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
+const Stack = createStackNavigator();
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await MediaLibrary.requestPermissionsAsync();
-      if (status !== "granted") return setLoading(false);
-      let files: MediaLibrary.Asset[] = [], cursor = null;
-      while (true) {
-        const { assets, hasNextPage, endCursor } = await MediaLibrary.getAssetsAsync({ mediaType: "audio", first: 100, after: cursor||undefined });
-        files = [...files, ...assets];
-        if (!hasNextPage) break;
-        cursor = endCursor;
-      }
-      setAudioFiles(files);
-      setLoading(false);
-    })();
-  }, []);
-
-  const playAudio = async (uri: string) => {
-    if (sound) await sound.unloadAsync();
-    const { sound: newSound } = await Audio.Sound.createAsync({ uri });
-    setSound(newSound);
-    await newSound.playAsync();
-  };
-
+const App: React.FC = () => {
   return (
-    <View>
-      <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>🎵 Liste des musiques</Text>
-      {loading ? <ActivityIndicator size="large" color="blue" /> : (
-        <FlatList
-          data={audioFiles}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => playAudio(item.uri)} style={{ padding: 10, borderBottomWidth: 1 }}>
-              <Text>{item.filename || "Fichier audio"}</Text>
-            </TouchableOpacity>
-          )}
-        />
-      )}
-    </View>
+    <Stack.Navigator initialRouteName="AudioList">
+      <Stack.Screen name="AudioList" component={AudioList} />
+      <Stack.Screen name="AudioPlayer" component={AudioPlayer} />
+    </Stack.Navigator>
   );
 };
 
-export default AudioList;
+export default App;
