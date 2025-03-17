@@ -3,7 +3,7 @@ import { FlatList, Text, TouchableOpacity, View, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons } from '@expo/vector-icons'; 
 import { styles } from '@/style/home.styles';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -90,4 +90,4 @@ export function MusicList({ songs }: Props) {
       )}
     </>
   );
-} 
+}
