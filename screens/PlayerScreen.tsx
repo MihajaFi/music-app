@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import { Audio } from 'expo-av';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../navigation'
+import { RootStackParamList } from '../navigation';
 import { AudioPlayer } from '../components';
+import { useAudio } from '../context';
 
 type PlayerScreenRouteProp = RouteProp<RootStackParamList, 'Player'>;
 
@@ -13,23 +13,12 @@ type Props = {
 
 export function PlayerScreen({ route }: Props) {
   const { song } = route.params;
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const { playSound, sound } = useAudio(); // Utiliser le contexte
 
   useEffect(() => {
-    (async () => {
-      if (song) {
-        const { sound } = await Audio.Sound.createAsync(
-          { uri: song.uri },
-          { shouldPlay: true }
-        );
-        setSound(sound);
-      }
-    })();
-    return () => {
-      if (sound) {
-        sound.unloadAsync();
-      }
-    };
+    if (song) {
+      playSound(song.uri);
+    }
   }, [song]);
 
   return (
