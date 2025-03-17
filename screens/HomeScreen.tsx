@@ -7,8 +7,7 @@ export function HomeScreen() {
   const songs = useAudioFiles();
 
   return (
-    <View>
-      <Text>Music Library</Text>
+    <View >
       <MusicList songs={songs} />
     </View>
   );
