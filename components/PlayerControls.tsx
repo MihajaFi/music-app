@@ -16,7 +16,7 @@ type Props = {
   currentSongUri: string;
 };
 
-export function PlayerControls({
+export const PlayerControls: React.FC<Props> = ({
   sound,
   isPlaying,
   pauseSound,
@@ -24,10 +24,35 @@ export function PlayerControls({
   nextTrack,
   previousTrack,
   currentSongUri,
-}: Props) {
+}) => {
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(1);
 
+  // Configuration de l'audio en arrière-plan
+  useEffect(() => {
+    const configureAudioBackground = async () => {
+      try {
+        await Audio.setAudioModeAsync({
+          playsInSilentModeIOS: true,  
+          allowsRecordingIOS: false, 
+          staysActiveInBackground: true, 
+        });
+        console.log("Audio en arrière-plan activé");
+      } catch (error) {
+        console.log("Erreur lors de la configuration de l'audio en arrière-plan:", error);
+      }
+    };
+
+    configureAudioBackground();
+
+    return () => {
+      if (sound) {
+        sound.unloadAsync();  
+      }
+    };
+  }, [sound]);
+
+ 
   useEffect(() => {
     if (sound) {
       const updateStatus = async () => {
@@ -88,4 +113,4 @@ export function PlayerControls({
       </View>
     </View>
   );
-}
+};

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Audio } from 'expo-av';
-import { useAudioFiles } from '@/hooks'; // Assure-toi d'importer ton hook
+import { useAudioFiles } from '@/hooks'; 
 
 type Song = {
   id: string;
@@ -17,7 +17,7 @@ type AudioContextType = {
   pauseSound: () => Promise<void>;
   nextTrack: () => void;
   previousTrack: () => void;
-  songs: Song[]; // Liste des chansons
+  songs: Song[];
 };
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
@@ -26,9 +26,9 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const songs = useAudioFiles(); // Récupère les chansons depuis le téléphone
+  const songs = useAudioFiles(); 
 
-  // Fonction pour jouer le son
+ 
   const playSound = async (uri: string) => {
     if (sound) {
       // Si un son est déjà joué, arrête-le et libère les ressources
