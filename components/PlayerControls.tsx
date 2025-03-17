@@ -33,9 +33,9 @@ export const PlayerControls: React.FC<Props> = ({
     const configureAudioBackground = async () => {
       try {
         await Audio.setAudioModeAsync({
-          playsInSilentModeIOS: true,  
-          allowsRecordingIOS: false, 
-          staysActiveInBackground: true, 
+          playsInSilentModeIOS: true,  // Permet de jouer l'audio en mode silencieux sur iOS
+          allowsRecordingIOS: false,   // Désactive l'enregistrement
+          staysActiveInBackground: true, // Maintient l'audio actif même en arrière-plan
         });
         console.log("Audio en arrière-plan activé");
       } catch (error) {
@@ -47,12 +47,12 @@ export const PlayerControls: React.FC<Props> = ({
 
     return () => {
       if (sound) {
-        sound.unloadAsync();  
+        sound.unloadAsync();  // Libère les ressources audio lorsque le composant est démonté
       }
     };
   }, [sound]);
 
- 
+  // Mise à jour du statut de la chanson (position et durée)
   useEffect(() => {
     if (sound) {
       const updateStatus = async () => {
