@@ -32,6 +32,12 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-media-library",
+        {
+          "isAccessMediaLocationEnabled": true
+        }
       ]
     ],
     "experiments": {
