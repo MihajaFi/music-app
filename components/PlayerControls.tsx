@@ -3,6 +3,9 @@ import { View, TouchableOpacity, Text, Dimensions } from "react-native";
 import { Audio } from "expo-av";
 import { Ionicons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from '@react-navigation/stack'; // Import StackNavigationProp
+import { RootStackParamList } from '../navigation/AppNavigator'; // Import your RootStackParamList
 
 const { width } = Dimensions.get("window");
 
@@ -27,6 +30,9 @@ export const PlayerControls: React.FC<Props> = ({
 }) => {
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(1);
+
+  // Define the navigation type
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList, 'Home'>>();
 
   // Configuration de l'audio en arrière-plan
   useEffect(() => {
@@ -87,6 +93,11 @@ export const PlayerControls: React.FC<Props> = ({
     }
   };
 
+  // Navigation to Home (or music list) screen
+  const handleGoHome = () => {
+    navigation.navigate("Home"); // Navigate to the Home screen (music list)
+  };
+
   return (
     <View>
       <Slider
@@ -111,6 +122,10 @@ export const PlayerControls: React.FC<Props> = ({
           <Ionicons name="play-skip-forward-outline" size={40} color="white" />
         </TouchableOpacity>
       </View>
+      {/* Add button to navigate to Home (music list) */}
+      <TouchableOpacity onPress={handleGoHome} style={{ marginTop: 20, alignItems: "center" }}>
+        <Text style={{ color: "#1DB954", fontSize: 16 }}>Go to Music List</Text>
+      </TouchableOpacity>
     </View>
   );
 };
